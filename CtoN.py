@@ -59,7 +59,7 @@ def main():
     # Canvas API URL
     API_URL = "https://canvas.calpoly.edu/"
     # Canvas API key
-    API_KEY = "15279~fAJk4UmYhVEtueKast01wORH2UBfbBhfXG0x6lA7W8CzlaSWCUDaFTJdZ2DONB3m"
+    API_KEY = ""
     # Initialize a new Canvas object
     canvas = Canvas(API_URL, API_KEY)
     c = canvas.get_courses(enrollment_state='active')
