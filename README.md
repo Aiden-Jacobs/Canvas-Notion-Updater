@@ -20,7 +20,11 @@ To use this program, follow these steps:
 
 2. Set up an integration in your Canvas account to generate a developer key, and add it to the `API_KEY` variable in the script.
 
-3. Set up an integration in your Notion account to generate an integration key, and add it to the `token` variable in the script. You will also need to add the database ID for the database that you want to use.
+3. Set up an integration in your Notion account
+    1. Generate an integration key [here](https://www.notion.so/my-integrations), and add it to the `token` variable in the script . 
+    2. Add the integration to your database as a conection
+    3. You will also need to add the database ID for the database that you want to use. 
+    >![picture alt](https://files.readme.io/62e5027-notion_database_id.png "Title is optional")
 
 4. Run the script, and follow the prompts to select the courses and tags that you want to include.
 
