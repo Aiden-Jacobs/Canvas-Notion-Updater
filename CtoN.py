@@ -50,7 +50,7 @@ def main():
     # Canvas API URL
     API_URL = "https://canvas.calpoly.edu/" # EXAMPLE
     # Canvas API key
-    API_KEY = ""
+    API_KEY = "" 
 
     # Initialize a new Canvas tool
     CanvasWorkspace = CanvasAPI_int.CanvasTool(API_URL,API_KEY)
