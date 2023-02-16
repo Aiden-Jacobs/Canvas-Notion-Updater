@@ -76,6 +76,7 @@ class NotionTool:
         return(self.DatabaseSchema['properties']['Tags']['multi_select']['options'])
     
     def CreateJsonForItem(self,Assignment : assignment_class.assignment):
+        
         """
         Create a JSON object for an assignment to be added to the database, based on the current database schema.
 
