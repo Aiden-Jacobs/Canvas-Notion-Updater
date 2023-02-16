@@ -74,6 +74,5 @@ def main():
             assignmentList.append(assignmentToAdd)
     Ndb.addAssignments(assignmentList,token)
 
-
 if __name__ == '__main__':
     main()
