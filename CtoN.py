@@ -1,14 +1,21 @@
-from canvasapi import Canvas
 import datetime
 
 import assignment_class
 import NotionAPI_Int
 import OptionsGUI
+import CanvasAPI_int
 
 
 def parseDate(TextDate):
     #TIME ZONE SET TO GMT/UTC/Z
-    #Returns Datetime object if Not None
+    """
+    Parameters:
+    TextDate (str): A string representing a date and time in ISO 8601 format.
+
+    Returns:
+    (datetime.datetime): A datetime object representing the parsed date and time, in the UTC time zone.
+    If the TextDate is "None", returns None.
+    """
     if TextDate == "None":
         return None
     tempDateTime = TextDate.split("T")
@@ -25,31 +32,15 @@ def parseDate(TextDate):
 
 
 def tagsToAdd(AllTags, courseName):
-    UserInput = ""
-    tagsToAddToAssignment = []
     gui = OptionsGUI.OptionsGUI(AllTags,"Tag options for "+str(courseName),"name")
     return (gui.selected)
-    # |  is used for CLI  |
-    # V                   V
-    """
-    print(gui.selected)
-    for tag in AllTags:
-        while True:
-            UserInput = input("Should assignments in class "+str(courseName)+" be tagged with tag "+str(tag['name'])+" ? y/n: ")
-            if UserInput.lower() == "y":
-                tagsToAddToAssignment.append(tag)
-                break
-            elif UserInput.lower() == "n":
-                break
-            else:
-                print("Invalid input")
-    return(tagsToAddToAssignment)
-    """
-
 
 
 def main():
+    # API keys and headers
+    # Notion API key
     token = ''
+    # Notion database ID
     databaseID = ""
     headers = {
         "Authorization": "Bearer " + token,
@@ -57,53 +48,22 @@ def main():
         "Notion-Version": "2022-02-22"
         }
     # Canvas API URL
-    API_URL = "https://canvas.calpoly.edu/"
+    API_URL = "https://canvas.calpoly.edu/" # EXAMPLE
     # Canvas API key
-    API_KEY = "15279~fAJk4UmYhVEtueKast01wORH2UBfbBhfXG0x6lA7W8CzlaSWCUDaFTJdZ2DONB3m"
-    # Initialize a new Canvas object
-    canvas = Canvas(API_URL, API_KEY)
-    c = canvas.get_courses(enrollment_state='active')
+    API_KEY = ""
 
-    listOfCurrentCourses = []
-    allCourses = {}
-    # get current courses from user
-    gui = OptionsGUI.OptionsGUI(c,"current courses")
-    for course in gui.selected:
-        listOfCurrentCourses.append([course.name, course.course_code,course.id])
-    # |  is used for CLI  |
-    # V                   V
-    """
-    for course in c:
-        try:
-            UInput = ""
-            while True:
-                UInput = input("Is "+str(course.name)+" a current course? y/n: ")
-                if UInput.lower() == "y":
-                    listOfCurrentCourses.append([course.name, course.course_code,course.id])#course,
-                    print("Course added")
-                    break
-                elif UInput.lower() == "n":
-                    break
-                else:
-                    print("Invalid input")
-        except:
-            pass
-    """
+    # Initialize a new Canvas tool
+    CanvasWorkspace = CanvasAPI_int.CanvasTool(API_URL,API_KEY)
+    # Initialize a new Notion tool
     Ndb = NotionAPI_Int.NotionTool(databaseID, headers)
-    AllTags = Ndb.getTagsFromDatabase()
-    #TODO Comment out print 
-    print(listOfCurrentCourses)
-    assignmentList = []
-    for c in listOfCurrentCourses:
-        course = canvas.get_course(c[2])
-        #TODO Comment out print 
-        print(course.name)
-        assignments = course.get_assignments()
 
-        tagsToAddToAssignment = tagsToAdd(AllTags,course.name)
+    AllTags = Ndb.getTagsFromDatabase()
+    assignmentList = []
+    for c in CanvasWorkspace.get_user_selections():
+        assignments = CanvasWorkspace.get_assignments_for_course(c[2])
+        tagsToAddToAssignment = tagsToAdd(AllTags,CanvasWorkspace.get_course_name(c[2]))
 
         for i in assignments:
-            #print("\n----------------------------------\n")
             date_due = str(i.due_at)
             date_start = str(i.unlock_at)
             link = i.html_url
@@ -115,34 +75,5 @@ def main():
     Ndb.addAssignments(assignmentList,token)
 
 
-main()
-
-
-
-"""
-def readPage(databaseID, headers):
-    readUrl = f"https://api.notion.com/v1/pages/e485dedc19ce4fb9927479ec9e0bc20c?v=55edb77ea1de4ae5a2ec99da6a8611bb"
-    res = requests.request("POST", readUrl, headers=headers)
-    data = res.json()
-    print(res.status_code)
-    # print(res.text)
-
-    with open('./full-properties.json', 'w', encoding='utf8') as f:
-        json.dump(data, f, ensure_ascii=False)
-
-    print("-",data['results'])
-    return data['results']
-
-
-
-    'properties': {
-        #"CHECKBOX":{  "id": "BBla","name": "Task complete","type": "checkbox","checkbox": {}},  # NOT WORKING
-        'DUE': {'id': '%5EnW~', 'type': 'date', 'date': {'start': startDate, 'end': endDate, 'time_zone': None}},
-        'Tags': {'id': '%7BnRb', 'type': 'multi_select', 'multi_select': Assignment.getTags()}, #{'id': 'd20f854e-b264-4aef-a4f5-ad2c611453e3', 'name': 'run', 'color': 'red'}
-        
-        'Name': {'id': 'title', 'type': 'title',
-             'title': [{'type': 'text',
-                'text': {'content': Assignment.get_name(), 'link': {'url': Assignment.get_link()}},
-                'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'},
-                'plain_text': Assignment.get_name(), 'href': Assignment.get_link()}]}}}
-    """
+if __name__ == '__main__':
+    main()
