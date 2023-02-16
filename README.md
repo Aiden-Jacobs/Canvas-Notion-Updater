@@ -26,24 +26,18 @@ To use this program, follow these steps:
 
 5. The script will then retrieve the assignments from Canvas and add them to the specified Notion database.
 
-### Files
+## Files:
 
-- `assignment_class.py`: Contains the class definition for the assignment object.
-- `NotionAPI_Int.py`: Contains the NotionTool class, which provides the methods for interacting with the Notion API.
-- `OptionsGUI.py`: Contains the OptionsGUI class, which provides a simple GUI for selecting multiple options from a list.
-- `canvas_notion.py`: Contains the main script.
+* `CanvasAPI_int.py`: Contains the class definition for the `CanvasTool` object which holds functions to interact with the CanvasAPI.
+* `NotionAPI_Int.py`: Contains the class definition for the `NotionTool` object which holds functions to interact with the NotionAPI.
+* `assignment_class.py`: Contains the class definition for the `assignment` object.
+* `CtoN.py`: This file is the main file that runs the entire code.
 
-### Functions
+### Classes:
 
-- `parseDate(TextDate)`: This function takes a string in the format "yyyy-mm-ddThh:mm:ssZ" and converts it to a datetime object.
-- `tagsToAdd(AllTags, courseName)`: This function takes a list of all tags in the Notion database and the name of the current course, and opens a GUI to allow the user to select the tags to add to the current course's assignments.
-- `main()`: The main function of the script, which retrieves the user's Canvas courses and tags, retrieves the assignments for each course, and adds them to the Notion database.
-
-### Classes
-
-- `assignment_class.assignment`: The class definition for the assignment object. This object contains the information for a single assignment (name, due date, start date, tags, and link).
-- `NotionAPI_Int.NotionTool`: The class definition for the NotionTool object. This object provides the methods for interacting with the Notion API, and contains the information for a single Notion database (database ID, headers, schema, and items).
-- `OptionsGUI.OptionsGUI`: The class definition for the OptionsGUI object. This object provides a simple GUI for selecting multiple options from a list.
+* `CanvasTool`: This object interacts with the CanvasAPI to get the current courses and assignments for a user. It takes in a URL and key to access the CanvasAPI.
+* `NotionTool`: This object interacts with the NotionAPI to get and add data from and to a specific Notion Database. It takes in a database ID and header information to access the NotionAPI.
+* `assignment`: The class definition for the `assignment` object. This object contains the information for a single assignment (name, due date, start date, tags, and link). 
 
 ### Additional Information
 
