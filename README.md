@@ -19,10 +19,11 @@ To use this program, follow these steps:
 1. Clone this repository and install the required libraries.
 
 2. Set up an integration in your Canvas account to generate a developer key, and add it to the `API_KEY` variable in the script.
+    1. Change the Canvas `API_URL`
 
 3. Set up an integration in your Notion account
     1. Generate an integration key [here](https://www.notion.so/my-integrations), and add it to the `token` variable in the script . 
-    2. Add the integration to your database as a conection
+    2. Add the integration to your database as a connection
     3. You will also need to add the database ID for the database that you want to use. 
     >![picture alt](https://files.readme.io/62e5027-notion_database_id.png "Title is optional")
 
