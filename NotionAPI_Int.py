@@ -76,7 +76,6 @@ class NotionTool:
         return(self.DatabaseSchema['properties']['Tags']['multi_select']['options'])
     
     def CreateJsonForItem(self,Assignment : assignment_class.assignment):
-        
         """
         Create a JSON object for an assignment to be added to the database, based on the current database schema.
 
@@ -97,19 +96,25 @@ class NotionTool:
                 temp = self.DatabaseSchema['properties'][prop]
                 if Assignment.get_due_date() != None:
                     temp[self.DatabaseSchema['properties'][prop]['type']] = {'start': Assignment.get_start_date().astimezone().isoformat(), 'end': Assignment.get_due_date().astimezone().isoformat(), 'time_zone': None}
+                else:
+                    temp[self.DatabaseSchema['properties'][prop]['type']] = {'start': None, 'end': None, 'time_zone': None}
                 propertiesJson2[prop] = temp
+
             if self.DatabaseSchema['properties'][prop]['type'] == "email" :
                 temp = self.DatabaseSchema['properties'][prop]
                 temp[self.DatabaseSchema['properties'][prop]['type']] = {}        
                 propertiesJson2[prop] = temp
+
             if self.DatabaseSchema['properties'][prop]['type'] == "files" :
                 temp = self.DatabaseSchema['properties'][prop]
                 temp[self.DatabaseSchema['properties'][prop]['type']] = {}        
                 propertiesJson2[prop] = temp
+
             if self.DatabaseSchema['properties'][prop]['type'] == "multi_select" :
                 temp = self.DatabaseSchema['properties'][prop]
                 temp[self.DatabaseSchema['properties'][prop]['type']] = Assignment.getTags()      
                 propertiesJson2[prop] = temp
+
             if self.DatabaseSchema['properties'][prop]['type'] == "title" :
                 temp = self.DatabaseSchema['properties'][prop]
                 temp[self.DatabaseSchema['properties'][prop]['type']] = [{'type': 'text',
@@ -117,10 +122,12 @@ class NotionTool:
                             'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'},
                             'plain_text': Assignment.get_name(), 'href': Assignment.get_link()}]        
                 propertiesJson2[prop] = temp
+
             if self.DatabaseSchema['properties'][prop]['type'] == "url" :        
                 temp = self.DatabaseSchema['properties'][prop]
                 temp[self.DatabaseSchema['properties'][prop]['type']] = {}        
                 propertiesJson2[prop] = temp
+
         return(propertiesJson2)
     
     def AddItem(self, Assignment,token, completed=False):
