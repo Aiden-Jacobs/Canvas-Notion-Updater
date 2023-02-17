@@ -36,7 +36,7 @@ To use this program, follow these steps:
 * `CanvasAPI_int.py`: Contains the class definition for the `CanvasTool` object which holds functions to interact with the CanvasAPI.
 * `NotionAPI_Int.py`: Contains the class definition for the `NotionTool` object which holds functions to interact with the NotionAPI.
 * `assignment_class.py`: Contains the class definition for the `assignment` object.
-* `CtoN.py`: This file is the main file that runs the entire code.
+* `CtoN.py`: This file is the main file that runs the entire project.
 
 ### Classes:
 
