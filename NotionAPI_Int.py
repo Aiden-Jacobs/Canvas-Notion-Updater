@@ -74,6 +74,12 @@ class NotionTool:
         Retrieve the list of tags (multi-select options) from the database schema and return it.
         """
         return(self.DatabaseSchema['properties']['Tags']['multi_select']['options'])
+
+    def getPropertiesType(self, prop):
+        return self.DatabaseSchema['properties'][prop]['type']
+    
+    def getProperty(self, prop):
+        pass
     
     def CreateJsonForItem(self,Assignment : assignment_class.assignment):
         """
@@ -91,40 +97,35 @@ class NotionTool:
                 del self.DatabaseSchema['properties'][prop]['name']
             except:
                 pass
-            temp = ""
-            if self.DatabaseSchema['properties'][prop]['type'] == "date" :        
-                temp = self.DatabaseSchema['properties'][prop]
+            temp = self.DatabaseSchema['properties'][prop]
+            if self.getPropertiesType(prop) == "date" :        
+                
                 if Assignment.get_due_date() != None:
                     temp[self.DatabaseSchema['properties'][prop]['type']] = {'start': Assignment.get_start_date().astimezone().isoformat(), 'end': Assignment.get_due_date().astimezone().isoformat(), 'time_zone': None}
                 else:
                     temp[self.DatabaseSchema['properties'][prop]['type']] = {'start': None, 'end': None, 'time_zone': None}
                 propertiesJson2[prop] = temp
 
-            if self.DatabaseSchema['properties'][prop]['type'] == "email" :
-                temp = self.DatabaseSchema['properties'][prop]
+            if self.getPropertiesType(prop) == "email" :
                 temp[self.DatabaseSchema['properties'][prop]['type']] = {}        
                 propertiesJson2[prop] = temp
 
-            if self.DatabaseSchema['properties'][prop]['type'] == "files" :
-                temp = self.DatabaseSchema['properties'][prop]
+            if self.getPropertiesType(prop) == "files" :
                 temp[self.DatabaseSchema['properties'][prop]['type']] = {}        
                 propertiesJson2[prop] = temp
 
-            if self.DatabaseSchema['properties'][prop]['type'] == "multi_select" :
-                temp = self.DatabaseSchema['properties'][prop]
+            if self.getPropertiesType(prop) == "multi_select" :
                 temp[self.DatabaseSchema['properties'][prop]['type']] = Assignment.getTags()      
                 propertiesJson2[prop] = temp
 
-            if self.DatabaseSchema['properties'][prop]['type'] == "title" :
-                temp = self.DatabaseSchema['properties'][prop]
+            if self.getPropertiesType(prop) == "title" :
                 temp[self.DatabaseSchema['properties'][prop]['type']] = [{'type': 'text',
                             'text': {'content': Assignment.get_name(), 'link': {'url': Assignment.get_link()}},
                             'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'},
                             'plain_text': Assignment.get_name(), 'href': Assignment.get_link()}]        
                 propertiesJson2[prop] = temp
 
-            if self.DatabaseSchema['properties'][prop]['type'] == "url" :        
-                temp = self.DatabaseSchema['properties'][prop]
+            if self.getPropertiesType(prop) == "url" :        
                 temp[self.DatabaseSchema['properties'][prop]['type']] = {}        
                 propertiesJson2[prop] = temp
 
